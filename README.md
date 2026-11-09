@@ -8,6 +8,15 @@ Integrantes: Eduardo Mambelli Serotini, Gabriel Henrique Lima, Ryan Alberto Sant
 Não precisa instalar nada: dê dois cliques em `index.html` (ou sirva a pasta com qualquer servidor estático).
 Crie uma conta na tela inicial; a conta já vem com disciplinas, tarefas e sessões de exemplo.
 
+### Com Docker
+
+```bash
+docker build -t estuda-mais .
+docker run --rm -p 8080:80 estuda-mais
+```
+
+Depois abra <http://localhost:8080>. A imagem é um nginx servindo os arquivos estáticos (`nginx.conf`).
+
 > Versão de demonstração: os dados ficam salvos no `localStorage` do navegador.
 > A camada `js/store.js` foi escrita como "repositórios" para ser trocada pelas chamadas à API NestJS (seção 8.4 do documento).
 
