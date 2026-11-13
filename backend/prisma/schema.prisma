@@ -1,0 +1,131 @@
+// Estuda+ database schema (MER, section 7.3 of the project document).
+// Table and column names follow the MER (snake_case, Portuguese);
+// model fields are camelCase for the TypeScript client.
+// Only usuario, disciplina and tarefa have endpoints in the 1st stage (section 8.4);
+// the other tables are already modelled so the 2nd stage only adds endpoints.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum TipoTarefa {
+  TAREFA
+  PROVA
+  ENTREGA
+}
+
+enum Prioridade {
+  BAIXA
+  MEDIA
+  ALTA
+}
+
+enum StatusTarefa {
+  PENDENTE
+  EM_ANDAMENTO
+  CONCLUIDA
+}
+
+model Usuario {
+  id           String         @id @db.Uuid
+  nome         String         @db.VarChar(100)
+  email        String         @unique @db.VarChar(254)
+  senhaHash    String         @map("senha_hash")
+  criadoEm     DateTime       @default(now()) @map("criado_em")
+  disciplinas  Disciplina[]
+  sessoes      SessaoEstudo[]
+  notificacoes Notificacao[]
+  membros      Membro[]
+
+  @@map("usuario")
+}
+
+model Disciplina {
+  id        String         @id @db.Uuid
+  nome      String         @db.VarChar(60)
+  professor String?        @db.VarChar(60)
+  cor       String         @default("#5b4bdb") @db.VarChar(7)
+  usuarioId String         @map("usuario_id") @db.Uuid
+  usuario   Usuario        @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  tarefas   Tarefa[]
+  sessoes   SessaoEstudo[]
+
+  @@index([usuarioId])
+  @@map("disciplina")
+}
+
+model Tarefa {
+  id           String       @id @db.Uuid
+  titulo       String       @db.VarChar(80)
+  tipo         TipoTarefa   @default(TAREFA)
+  prazo        DateTime     @db.Date
+  prioridade   Prioridade   @default(MEDIA)
+  status       StatusTarefa @default(PENDENTE)
+  disciplinaId String       @map("disciplina_id") @db.Uuid
+  disciplina   Disciplina   @relation(fields: [disciplinaId], references: [id], onDelete: Cascade)
+
+  @@index([disciplinaId])
+  @@map("tarefa")
+}
+
+model SessaoEstudo {
+  id           String     @id @db.Uuid
+  inicio       DateTime
+  duracaoMin   Int        @map("duracao_min")
+  usuarioId    String     @map("usuario_id") @db.Uuid
+  disciplinaId String     @map("disciplina_id") @db.Uuid
+  usuario      Usuario    @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  disciplina   Disciplina @relation(fields: [disciplinaId], references: [id], onDelete: Cascade)
+
+  @@index([usuarioId])
+  @@map("sessao_estudo")
+}
+
+model Notificacao {
+  id        String  @id @db.Uuid
+  tipo      String  @db.VarChar(40)
+  mensagem  String
+  lida      Boolean @default(false)
+  usuarioId String  @map("usuario_id") @db.Uuid
+  usuario   Usuario @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+
+  @@index([usuarioId])
+  @@map("notificacao")
+}
+
+model GrupoEstudo {
+  id            String     @id @db.Uuid
+  nome          String     @db.VarChar(50)
+  codigoConvite String     @unique @map("codigo_convite") @db.VarChar(10)
+  membros       Membro[]
+  materiais     Material[]
+
+  @@map("grupo_estudo")
+}
+
+model Membro {
+  usuarioId String      @map("usuario_id") @db.Uuid
+  grupoId   String      @map("grupo_id") @db.Uuid
+  entradaEm DateTime    @default(now()) @map("entrada_em")
+  usuario   Usuario     @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  grupo     GrupoEstudo @relation(fields: [grupoId], references: [id], onDelete: Cascade)
+
+  @@id([usuarioId, grupoId])
+  @@map("membro")
+}
+
+model Material {
+  id      String      @id @db.Uuid
+  titulo  String      @db.VarChar(200)
+  url     String?
+  grupoId String      @map("grupo_id") @db.Uuid
+  grupo   GrupoEstudo @relation(fields: [grupoId], references: [id], onDelete: Cascade)
+
+  @@index([grupoId])
+  @@map("material")
+}
