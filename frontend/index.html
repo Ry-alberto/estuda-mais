@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Estuda+ · Plataforma de organização de estudos</title>
+    <meta name="description" content="Estuda+: organize disciplinas, tarefas e provas, use o timer Pomodoro e acompanhe suas horas de estudo." />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet" />
+    <script>
+      // Apply the saved theme before React mounts to avoid a light flash (RF09).
+      try {
+        document.documentElement.setAttribute("data-theme", localStorage.getItem("estuda:theme") === "dark" ? "dark" : "light");
+      } catch (_) {}
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <noscript>O Estuda+ precisa de JavaScript habilitado.</noscript>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

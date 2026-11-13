@@ -1,0 +1,90 @@
+/* Estuda+ style guide (section 5): indigo #5B4BDB, mint #2EC4B6, background #F4F5F7,
+   text #1F2430, Inter (body) + Poppins (headings), 12px radius, light shadows.
+   Colors are CSS variables so the dark theme (RF09) only redefines the variables. */
+@import "tailwindcss";
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+:root {
+  --primary: #5b4bdb;
+  --primary-hover: #4a3bc7;
+  --primary-soft: #ecebfc;
+  --success: #2ec4b6;
+  --success-soft: #dcf6f3;
+  --warning: #f2a33a;
+  --warning-text: #b9741a;
+  --warning-soft: #fdf0dc;
+  --danger: #e5484d;
+  --danger-soft: #fde4e5;
+
+  --background: #f4f5f7;
+  --surface: #ffffff;
+  --surface-2: #f7f7fa;
+  --border: #e6e7ec;
+  --foreground: #1f2430;
+  --muted: #6b7180;
+}
+
+[data-theme="dark"] {
+  --primary: #7b6df0;
+  --primary-hover: #8f83f5;
+  --primary-soft: #2a2650;
+  --success-soft: #133b39;
+  --warning-text: #f2a33a;
+  --warning-soft: #3d2f17;
+  --danger-soft: #42191c;
+
+  --background: #12141b;
+  --surface: #1b1e27;
+  --surface-2: #232733;
+  --border: #2d3240;
+  --foreground: #e8eaf0;
+  --muted: #9aa0ae;
+}
+
+@theme inline {
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-soft: var(--primary-soft);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-warning: var(--warning);
+  --color-warning-text: var(--warning-text);
+  --color-warning-soft: var(--warning-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-border: var(--border);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-heading: "Poppins", "Inter", system-ui, sans-serif;
+
+  --radius-card: 12px;
+  --shadow-card: 0 1px 2px rgb(31 36 48 / 0.04), 0 2px 8px rgb(31 36 48 / 0.05);
+}
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+  body {
+    @apply bg-background font-sans text-sm text-foreground antialiased;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-heading;
+  }
+  *,
+  ::before,
+  ::after {
+    border-color: var(--border);
+  }
+}
