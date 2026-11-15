@@ -111,6 +111,6 @@ Sessões de estudo e grupos ficam no `localStorage` porque a API da 1ª etapa co
 
 ## Deploy (Prod)
 
-- Front-end na Vercel: diretório `frontend/`, variável `VITE_API_URL` apontando para a API (`vercel.json` já trata as rotas da SPA).
+- Front-end na Railway: diretório `frontend/`, variável `VITE_API_URL` apontando para a API.
 - Back-end no Render ou Railway: diretório `backend/` com o `Dockerfile`, variáveis do `backend/.env.example`.
 - Banco no Neon ou Supabase: usar a connection string em `DATABASE_URL`.
